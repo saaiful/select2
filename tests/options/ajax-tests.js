@@ -48,3 +48,34 @@ QUnit.test('more than one default option can be changed via set()', function(ass
     'Both ajax.delay and ajax.dataType present in defaults');
   defaults.reset();
 });
+
+QUnit.test('selectedData option is merged and applied', function (assert) {
+  var defaults = require('select2/defaults');
+
+  var selectedData = [
+    { id: 1, text: 'Option 1' },
+    { id: 2, text: 'Option 2' }
+  ];
+
+  // Apply the selectedData to defaults
+  defaults.set('selectedData', selectedData);
+
+  var mergedOptions = defaults.apply({
+    selectedData: selectedData
+  });
+
+  assert.deepEqual(
+    mergedOptions.selectedData,
+    selectedData,
+    'selectedData is correctly set and applied in merged options'
+  );
+
+  // Ensure the selectedData is applied when passed as an option
+  assert.equal(
+    mergedOptions.selectedData.length,
+    2,
+    'The selectedData array contains two items'
+  );
+
+  defaults.reset();
+});

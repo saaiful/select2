@@ -43,3 +43,4 @@ This is a list of all the Select2 configuration options.
 | `tokenSeparators` | array | `null` | The list of characters that should be used as token separators. |
 | `width` | string | `resolve` | Supports [customization of the container width](/appearance#container-width). |
 | `scrollAfterSelect` | boolean | `false` | If `true`, resolves issue for multiselects using `closeOnSelect: false` that caused the list of results to scroll to the first selection after each select/unselect (see https://github.com/select2/select2/pull/5150). This behaviour was intentional to deal with infinite scroll UI issues (if you need this behavior, set `false`) but it created an issue with multiselect dropdown boxes of fixed length. |
+| `selectedData` | array of objects | `false` | Used to pre-select value when needed (works with ajax/remote). |

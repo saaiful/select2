@@ -6,14 +6,30 @@ define([
   function AjaxAdapter ($element, options) {
     this.ajaxOptions = this._applyDefaults(options.get('ajax'));
 
+    this.selectedData = options.get('selectedData') || []; // Store selected data
+
     if (this.ajaxOptions.processResults != null) {
       this.processResults = this.ajaxOptions.processResults;
     }
 
     AjaxAdapter.__super__.constructor.call(this, $element, options);
+
+    // Automatically select any data sent via selectedData
+    if (Array.isArray(this.selectedData) && this.selectedData.length > 0) {
+      this._selectInitialData($element, this.selectedData);
+    }
   }
 
   Utils.Extend(AjaxAdapter, ArrayAdapter);
+
+  // Helper function to programmatically select the data
+  AjaxAdapter.prototype._selectInitialData = function ($element, selectedData) {
+    for (var i = 0; i < selectedData.length; i++) {
+      var item = selectedData[i];
+      var newOption = new Option(item.text, item.id, true, true);
+      $element.append(newOption).trigger('change'); // Programmatically set the value
+    }
+  };
 
   AjaxAdapter.prototype._applyDefaults = function (options) {
     var defaults = {
@@ -87,7 +103,7 @@ define([
         // Attempt to detect if a request was aborted
         // Only works if the transport exposes a status property
         if ($request && 'status' in $request &&
-            ($request.status === 0 || $request.status === '0')) {
+          ($request.status === 0 || $request.status === '0')) {
           return;
         }
 
